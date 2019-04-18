@@ -1,9 +1,14 @@
 function createQuoteHTML() {
 
+  drawingImage(canvas) {
+    context = canvas.getContext("2d");
+  }
+
   var canvas = document.createElement("canvas");
   canvas.style.width = "80%";
   canvas.style.height = "80%";
   document.body.appendChild(canvas);
+  drawingImage(canvas);
 
   var quoteButton = document.createElement("button");
   quoteButton.textContent = "Сгенерировать новый коллаж с цитатой";
