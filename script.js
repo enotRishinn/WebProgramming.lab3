@@ -1,11 +1,17 @@
 
 function createQuoteHTML() {
 
+
+
+
   var canvas = document.createElement("canvas");
   canvas.width = "600";
   canvas.height = "400";
   document.body.appendChild(canvas);
   drawingImage(canvas);
+  drawingText(canvas);
+
+
 
 
   var saveButton = document.createElement("button");
@@ -13,6 +19,7 @@ function createQuoteHTML() {
   saveButton.style.margin = "2%"
   saveButton.style.padding = "1%";
   saveButton.style.display = "flex";
+
   saveButton.onclick = function() {
 
   }
@@ -44,7 +51,49 @@ function drawingImage(canvas) {
   }
 }
 
+var quote;
+
+function parseQuote(response) {
+  quote = response.quoteText;
+  createQuoteHTML();
+}
+
+function getQuote() {
+  var request = document.createElement("script");
+  request.src = "https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=ru&jsonp=parseQuote";
+  request.async = true;
+  document.body.appendChild(request);
+}
+
+getQuote();
+
+function drawingText(canvas) {
+  var context = canvas.getContext("2d");
+  context.font = "20px Arial";
+  context.fillStyle = "rgba(0, 0, 0, 0.5)";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "white";
 
 
+  var separator = ' ';
+  var text = quote.split(separator);
+  var ourQuotes = "";
+  var citate = [];
 
-createQuoteHTML();
+  for (var i = 0; i < text.length; i++) {
+    var quotes = ourQuotes + text[i] + " ";
+    var testWidth = context.measureText(quotes).width;
+    if (testWidth > canvas.width - margin) {
+      citate.push(ourQuotes);
+      ourQuotes = words[i] + " ";
+      marginTop += betweenHeight;
+    } else {
+      ourQuotes = quotes;
+    }
+  }
+  citate.push(ourQuotes);
+
+
+  }
+
+}
