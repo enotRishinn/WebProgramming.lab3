@@ -34,34 +34,40 @@ function drawingImage(canvas) {
   var context = canvas.getContext("2d");
   context.fillStyle = "rgba(0, 0, 0, 0.9)";
   var collections = [762960, 1538121, 162468, 357786, 1346770, 1075856, 162232];
-  var index;
-  var num;
+  var num = 0, index;
+  var arr = new Array();
+  for (var i = 0; i < 4; i++) {
+      var img = new Image();
 
+      while (num == 0) {
+      num = collections[Math.floor(Math.random() * collections.length)];
+      }
+      index = collections.indexOf(num);
+      collections[index] = 0;
+      if (i != 3) {
+        img.src = "https://source.unsplash.com/collection/"+ num + "/300x200";
+        arr.push(img);
+      }
+      if (i == 3) {
+        var last_img = new Image();
+        last_img.src = "https://source.unsplash.com/collection/"+ num + "/300x200";
+        arr.push(last_img);
 
-
-      var img1, img2, img3, img4;
-      img1 = new Image();
-
-      img2 = new Image();
-
-      img3 = new Image();
-
-      img4 = new Image();
-
-      window.onload = (function(img1, img2, img3, img4) {
+        last_img.onload = (function(arr) {
             return function() {
-              context.drawImage(img1, 0, 0);
-              context.drawImage(img2, 0, 200);
-              context.drawImage(img3, 300, 0);
-              context.drawImage(img4, 300, 200);
-              drawingText(canvas);
-              }
-          })(img1, img2, img3, img4);
-      img1.src = "https://source.unsplash.com/collection/"+ collections[0] + "/300x200";
-      img2.src = "https://source.unsplash.com/collection/"+ collections[1] + "/300x200";
-      img3.src = "https://source.unsplash.com/collection/"+ collections[2] + "/300x200";
-      img4.src = "https://source.unsplash.com/collection/"+ collections[3] + "/300x200";
+              for (var j = 0; j < 4; j++) {
+                var y = 0, x = (j % 2)*300;
+                if (j == 1 || j == 2) {y = 200;}
+            context.drawImage(arr[j], 0, 0);
+            }
+            drawingText(canvas);
 
+              }
+          })(arr);
+      }
+      num = 0;
+
+  }
 }
 
 var quote;
