@@ -1,4 +1,3 @@
-
 function createQuoteHTML() {
 
   var canvas = document.createElement("canvas");
@@ -7,13 +6,18 @@ function createQuoteHTML() {
   document.body.appendChild(canvas);
   drawingImage(canvas);
 
+  var saveLink = document.createElement("a");
+  saveLink.hidden = true;
+
   var saveButton = document.createElement("button");
   saveButton.textContent = "Сохранить коллаж";
   saveButton.style.margin = "2%"
   saveButton.style.padding = "1%";
   saveButton.style.display = "flex";
   saveButton.onclick = function() {
-
+    saveLink.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    saveLink.download = "Collage.png";
+    saveLink.click();
   }
   document.body.appendChild(saveButton);
 }
@@ -30,6 +34,7 @@ function drawingImage(canvas) {
 
   for (var i = 0; i < 4; i++) {
     var img = new Image();
+    img.crossOrigin = "Anonymous"; //не передаются учетные данные
 
     while (num == 0) {
     num = collections[Math.floor(Math.random() * collections.length)];
