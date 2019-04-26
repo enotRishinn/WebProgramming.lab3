@@ -8,13 +8,14 @@ function createQuoteHTML() {
   document.body.appendChild(canvas);
   drawingImage(canvas);
 
+
   var quoteButton = document.createElement("button");
   quoteButton.textContent = "Сгенерировать новый коллаж с цитатой";
   quoteButton.style.padding = "1%";
   quoteButton.style.margin = "2%";
   quoteButton.style.float = "left";
   quoteButton.onclick = function() {
-
+    drawingImage(canvas);
   }
   document.body.appendChild(quoteButton);
 
@@ -32,41 +33,42 @@ function createQuoteHTML() {
 function drawingImage(canvas) {
 
   var context = canvas.getContext("2d");
-  context.fillStyle = "rgba(0, 0, 0, 0.9)";
+
+
   var collections = [762960, 1538121, 162468, 357786, 1346770, 1075856, 162232];
+  var f = 0;
   var num = 0, index;
   var arr = new Array();
+
   for (var i = 0; i < 4; i++) {
-      var img = new Image();
+    var img = new Image();
 
-      while (num == 0) {
-      num = collections[Math.floor(Math.random() * collections.length)];
-      }
-      index = collections.indexOf(num);
-      collections[index] = 0;
-      if (i != 3) {
-        img.src = "https://source.unsplash.com/collection/"+ num + "/300x200";
+    while (num == 0) {
+    num = collections[Math.floor(Math.random() * collections.length)];
+    }
+
+    index = collections.indexOf(num);
+    collections[index] = 0;
+    img.src = "https://source.unsplash.com/collection/"+ num + "/300x200";
+    num = 0;
+
+    img.onload = (function(img) {
+      return function() {
         arr.push(img);
-      }
-      if (i == 3) {
-        var last_img = new Image();
-        last_img.src = "https://source.unsplash.com/collection/"+ num + "/300x200";
-        arr.push(last_img);
+        f = f + 1;
 
-        last_img.onload = (function(arr) {
-            return function() {
-              for (var j = 0; j < 4; j++) {
-                var y = 0, x = (j % 2)*300;
-                if (j == 1 || j == 2) {y = 200;}
-            context.drawImage(arr[j], 0, 0);
+        if (f == 4) {
+          for (var k = 0; k < 4; k++) {
+            var y = 0, x = (k % 2)*300;
+            if (k == 1 || k == 2) {
+              y = 200;
             }
-            drawingText(canvas);
-
-              }
-          })(arr);
+            context.drawImage(arr[k], x, y);
+          }
+          drawingText(canvas);
+        }
       }
-      num = 0;
-
+    })(img);
   }
 }
 
@@ -90,7 +92,6 @@ function drawingText(canvas) {
 
   var context = canvas.getContext("2d");
   context.font = "30px Arial";
-  context.fillStyle = "rgba(0, 0, 0, 0.5)";
   context.fillStyle = "black";
 
 
