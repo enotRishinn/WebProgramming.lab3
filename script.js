@@ -107,7 +107,7 @@ function drawingText(canvas) {
 
   for (var i = 0; i < citate.length; i++) {
   var x = (600 - context.measureText(citate[i]).width) / 2 ;
-  var y = ((400 - 30*citate.length - 10*(citate.length - 1)) / 2) + (i+1)*30 + i*10;
+  var y = ((400 - 30*citate.length - 10*(citate.length - 1)) / 2) + (i+1)*30 + (i-1)*10;
   context.fillText(citate[i], x, y);
   }
 
