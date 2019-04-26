@@ -4,26 +4,14 @@ function createQuoteHTML() {
   var canvas = document.createElement("canvas");
   canvas.width = "600";
   canvas.height = "400";
-  canvas.style.float = "left";
   document.body.appendChild(canvas);
   drawingImage(canvas);
-
-
-  var quoteButton = document.createElement("button");
-  quoteButton.textContent = "Сгенерировать новый коллаж с цитатой";
-  quoteButton.style.padding = "1%";
-  quoteButton.style.margin = "2%";
-  quoteButton.style.float = "left";
-  quoteButton.onclick = function() {
-    drawingImage(canvas);
-  }
-  document.body.appendChild(quoteButton);
 
   var saveButton = document.createElement("button");
   saveButton.textContent = "Сохранить коллаж";
   saveButton.style.margin = "2%"
   saveButton.style.padding = "1%";
-
+  saveButton.style.display = "flex";
   saveButton.onclick = function() {
 
   }
@@ -88,23 +76,25 @@ function getQuote() {
 
 getQuote();
 
+
+
 function drawingText(canvas) {
 
   var context = canvas.getContext("2d");
+  context.fillStyle = "rgba(0, 0, 0, 0.4)";
+  context.fillRect(0, 0, canvas.width, canvas.height);
   context.font = "30px Arial";
-  context.fillStyle = "black";
+  context.fillStyle = "white";
 
 
   var separator = ' ';
   var text = quote.split(separator);
   var ourQuotes = "";
   var citate = [];
-  var margin = 20;
-  var interval = 30;
 
   for (var i = 0; i < text.length; i++) {
     var quotes = ourQuotes + text[i] + " ";
-    if (context.measureText(quotes).width > 600 - margin) {
+    if (context.measureText(quotes).width > 560) {
       citate.push(ourQuotes);
       ourQuotes = text[i] + " ";
     } else {
@@ -116,11 +106,9 @@ function drawingText(canvas) {
 
 
   for (var i = 0; i < citate.length; i++) {
-  var first = (600 - context.measureText(citate[i]).width) / 2 ;
-  var second = (400 - citate.length * i + interval*i + (i+1)* margin) / 2;
-  context.fillText(citate[i], first, second);
-
-  first += interval;
+  var x = (600 - context.measureText(citate[i]).width) / 2 ;
+  var y = ((400 - 30*citate.length - 10*(citate.length - 1)) / 2) + (i+1)*30 + i*10;
+  context.fillText(citate[i], x, y);
   }
 
 }
